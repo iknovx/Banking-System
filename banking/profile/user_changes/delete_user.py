@@ -22,7 +22,6 @@ def delete_user():
             connect.commit()
             print("User deleted")
         except Error:
-            # FK constraint (транзакции/депозиты ссылаются на этого пользователя)
             connect.rollback()
             print("Cannot delete: this user has transaction or deposit history")
 

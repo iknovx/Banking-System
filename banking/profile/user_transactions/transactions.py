@@ -16,9 +16,6 @@ def find_user_transactions(user_id, resultant=None):
         if transaction.sender == user_id or transaction.recipient == user_id:
             result.append(transaction)
     return resultant
-    var = banking.db
-    import get_connection, find_user_by_id, list_transactions_for_user
-
 
 def view_transactions():
     connect = get_connection()

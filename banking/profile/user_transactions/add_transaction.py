@@ -42,9 +42,6 @@ def add_transaction():
             return
 
 
-
-        # FOR UPDATE locks this row until COMMIT/ROLLBACK, preventing
-        # concurrent transactions from reading a stale balance
         sender_balance = get_balance_for_update(cursor, sender["id"])
 
         if sender_balance < amount:
