@@ -41,7 +41,7 @@ def add_transaction():
             print("Amount must be positive")
             return
 
-        connect.start_transaction()
+
 
         # FOR UPDATE locks this row until COMMIT/ROLLBACK, preventing
         # concurrent transactions from reading a stale balance
@@ -58,7 +58,7 @@ def add_transaction():
 
         connect.commit()
         print(f"Transaction complete: {amount} sent from {sender['user_nickname']} "
-              f"to {recipient['nickname']} (id: {transaction_id})")
+              f"to {recipient['user_nickname']} (id: {transaction_id})")
 
     except Error as e:
         connect.rollback()

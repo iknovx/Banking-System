@@ -25,7 +25,7 @@ def deposit():
             print("Amount must be positive")
             return
 
-        connect.start_transaction()
+
         adjust_balance(cursor, user["id"], amount)
         deposit_id = insert_deposit(cursor, user["id"], amount, datetime.now())
         connect.commit()

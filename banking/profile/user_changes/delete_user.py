@@ -31,5 +31,3 @@ def delete_user():
         connect.close()
 
 
-if __name__ == "__main__":
-    delete_user()

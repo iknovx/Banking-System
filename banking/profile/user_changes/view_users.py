@@ -25,5 +25,3 @@ def view_user():
         connect.close()
 
 
-if __name__ == "__main__":
-    view_user()

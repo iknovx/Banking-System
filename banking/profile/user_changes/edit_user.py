@@ -75,5 +75,3 @@ def update_user():
         connect.close()
 
 
-if __name__ == "__main__":
-    update_user()

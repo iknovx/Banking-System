@@ -1,6 +1,6 @@
 from os import getenv
 
-import connect
+
 import mysql.connector
 from dotenv import load_dotenv
 
@@ -22,6 +22,7 @@ def get_connection():
 
 
 def ensure_tables():
+    connect = get_connection()
     cursor = connect.cursor()
     try:
         cursor.execute('''
@@ -118,7 +119,7 @@ def insert_user(cursor, nickname, first_name, last_name, email, phone_number, pa
     cursor.execute(
         "INSERT INTO users (nickname, first_name, last_name, email, phone_number, password, balance) "
         "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-        (nickname, first_name, last_name, email, phone_number, password_hash, balance)
+        (user_nickname, first_name, last_name, email, phone_number, password_hash, balance)
     )
     return cursor.lastrowid
 
