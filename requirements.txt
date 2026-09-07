@@ -1,0 +1,12 @@
+bitcoin==1.1.42
+certifi==2026.7.22
+charset-normalizer==3.5.1
+connect==0.2
+future==1.0.0
+idna==3.19
+mysql-connector-python==26.7.0
+pycoin==0.92718.20260405
+python-dotenv==1.2.3
+requests==2.34.2
+transactions==0.2.0
+urllib3==2.7.0

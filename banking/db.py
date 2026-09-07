@@ -1,14 +1,8 @@
-"""
-Общий модуль для подключения к MySQL и всех операций с данными.
-Все остальные файлы проекта импортируют отсюда — своих подключений
-и своих CREATE TABLE в других файлах быть не должно.
-"""
-
 from os import getenv
 
+import connect
 import mysql.connector
 from dotenv import load_dotenv
-from mysql.connector import Error
 
 load_dotenv()
 
@@ -19,7 +13,6 @@ MYSQL_DATABASE = getenv("MYSQL_DATABASE")
 
 
 def get_connection():
-    """Открывает новое подключение к БД. Вызывающий код отвечает за close()."""
     return mysql.connector.connect(
         host=MYSQL_HOST,
         user=MYSQL_USER,
@@ -29,8 +22,6 @@ def get_connection():
 
 
 def ensure_tables():
-    """Создаёт все таблицы, если их ещё нет. Вызывать один раз при старте main.py."""
-    connect = get_connection()
     cursor = connect.cursor()
     try:
         cursor.execute('''
@@ -71,7 +62,7 @@ def ensure_tables():
         connect.close()
 
 
-# ---------- чтение пользователей ----------
+
 
 def _row_to_user_dict(row):
     if row is None:
@@ -123,8 +114,6 @@ def find_user_by_phone(cursor, phone_number):
     return _row_to_user_dict(cursor.fetchone())
 
 
-# ---------- запись пользователей ----------
-
 def insert_user(cursor, nickname, first_name, last_name, email, phone_number, password_hash, balance):
     cursor.execute(
         "INSERT INTO users (nickname, first_name, last_name, email, phone_number, password, balance) "
@@ -135,8 +124,6 @@ def insert_user(cursor, nickname, first_name, last_name, email, phone_number, pa
 
 
 def update_user_field(cursor, user_id, field, value):
-    # field должен быть строго из белого списка допустимых колонок —
-    # никогда не подставлять field напрямую из пользовательского ввода.
     allowed_fields = {"nickname", "email", "phone_number", "password"}
     if field not in allowed_fields:
         raise ValueError(f"Недопустимое поле для обновления: {field}")
@@ -146,8 +133,6 @@ def update_user_field(cursor, user_id, field, value):
 def delete_user_by_id(cursor, user_id):
     cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
 
-
-# ---------- балансы ----------
 
 def get_balance_for_update(cursor, user_id):
     """Читает баланс с блокировкой строки — использовать только внутри start_transaction()."""
@@ -159,8 +144,6 @@ def get_balance_for_update(cursor, user_id):
 def adjust_balance(cursor, user_id, delta):
     cursor.execute("UPDATE users SET balance = balance + %s WHERE id = %s", (delta, user_id))
 
-
-# ---------- транзакции ----------
 
 def insert_transaction(cursor, sender_id, recipient_id, amount, created_at):
     cursor.execute(
@@ -180,7 +163,6 @@ def list_transactions_for_user(cursor, user_id):
     return cursor.fetchall()
 
 
-# ---------- депозиты ----------
 
 def insert_deposit(cursor, user_id, amount, created_at):
     cursor.execute(
